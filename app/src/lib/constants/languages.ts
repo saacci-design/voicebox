@@ -31,8 +31,14 @@ export const ALL_LANGUAGES = {
   ru: 'Russian',
   sv: 'Swedish',
   sw: 'Swahili',
+  ta: 'Tamil',
+  te: 'Telugu',
+  tl: 'Filipino',
   tr: 'Turkish',
+  ur: 'Urdu',
   zh: 'Chinese',
+  kn: 'Kannada',
+  ml: 'Malayalam',
 } as const;
 
 export type LanguageCode = keyof typeof ALL_LANGUAGES;
@@ -70,6 +76,7 @@ export const ENGINE_LANGUAGES: Record<string, readonly LanguageCode[]> = {
   tada: ['en', 'ar', 'zh', 'de', 'es', 'fr', 'it', 'ja', 'pl', 'pt'],
   kokoro: ['en', 'es', 'fr', 'hi', 'it', 'pt', 'ja', 'zh'],
   qwen_custom_voice: ['zh', 'en', 'ja', 'ko', 'de', 'fr', 'ru', 'pt', 'es', 'it'],
+  google_tts: ['ar', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'he', 'hi', 'it', 'ja', 'kn', 'ko', 'ml', 'ms', 'nl', 'no', 'pl', 'pt', 'ru', 'sv', 'ta', 'te', 'tl', 'tr', 'ur', 'zh'],
 } as const;
 
 /** Helper: get language options for a given engine. */
