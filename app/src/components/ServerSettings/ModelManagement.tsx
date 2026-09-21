@@ -89,6 +89,8 @@ const MODEL_DESCRIPTIONS: Record<string, string> = {
     'Qwen3 1.7B — balanced size and quality. Handles subtle self-corrections and technical vocabulary better than the 0.6B. Runs at ~1.1 GB quantized on Apple Silicon.',
   'qwen3-4b':
     'Qwen3 4B — highest quality local refinement and longer-form reasoning. ~2.5 GB quantized on Apple Silicon, ~8 GB at full precision on PyTorch.',
+  'google-tts':
+    'Google Text-to-Speech via the gTTS library. Cloud-based — no local model download required. Supports 28 languages including Tamil, Malayalam, Kannada, Telugu, Urdu, and Filipino.',
 };
 
 function formatDownloads(n: number): string {
@@ -414,7 +416,8 @@ export function ModelManagement() {
         m.model_name.startsWith('luxtts') ||
         m.model_name.startsWith('chatterbox') ||
         m.model_name.startsWith('tada') ||
-        m.model_name.startsWith('kokoro'),
+        m.model_name.startsWith('kokoro') ||
+        m.model_name.startsWith('google-tts'),
     ) ?? [];
   const whisperModels = modelStatus?.models.filter((m) => m.model_name.startsWith('whisper')) ?? [];
   const llmModels = modelStatus?.models.filter((m) => m.model_name.startsWith('qwen3-')) ?? [];

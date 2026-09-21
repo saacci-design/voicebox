@@ -11,4 +11,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    // Output to voicebox/frontend/ so the FastAPI backend can serve it
+    outDir: '../frontend',
+    emptyOutDir: true,
+  },
 });

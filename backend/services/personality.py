@@ -118,3 +118,40 @@ async def rewrite_as_profile(
         model_size=resolved_size,
     )
     return PersonalityResult(text=output.strip(), model_size=resolved_size)
+
+
+_INSTRUCT_SYSTEM = (
+    "You are a text rewriter. Rewrite the user's text to match the style instruction given. "
+    "Keep every idea intact — change only the wording and phrasing. "
+    "Output only the rewritten text. No explanations, no greetings, no meta-commentary."
+)
+
+
+async def rewrite_with_instruct(
+    instruct: str,
+    user_text: str,
+    model_size: str | None = None,
+) -> PersonalityResult:
+    """Rewrite *user_text* to match the *instruct* style directive.
+
+    Used by engines (e.g. Google TTS) that lack native prosody control so
+    that the instruct field still has a meaningful effect via text rewriting.
+    """
+    if not instruct or not instruct.strip():
+        raise ValueError("instruct must be a non-empty style directive.")
+    cleaned = collapse_repetitive_artifacts(user_text)
+    if not cleaned.strip():
+        raise ValueError("Rewrite needs non-empty text.")
+
+    backend = llm_service.get_llm_model()
+    resolved_size = model_size or backend.model_size
+
+    system_prompt = _INSTRUCT_SYSTEM + f"\n\nStyle instruction: {instruct.strip()}"
+    output = await backend.generate(
+        prompt=cleaned,
+        system=system_prompt,
+        max_tokens=1024,
+        temperature=0.3,
+        model_size=resolved_size,
+    )
+    return PersonalityResult(text=output.strip(), model_size=resolved_size)

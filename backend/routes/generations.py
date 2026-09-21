@@ -87,6 +87,15 @@ async def generate_speech(
         if not text:
             raise HTTPException(status_code=500, detail="LLM produced empty output; nothing to speak.")
         source = "personality_speak"
+    elif engine == "google_tts" and data.instruct and data.instruct.strip():
+        try:
+            llm_result = await personality.rewrite_with_instruct(data.instruct, data.text)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
+        text = llm_result.text.strip()
+        if not text:
+            raise HTTPException(status_code=500, detail="LLM produced empty output; nothing to speak.")
+        source = "instruct_rewrite"
 
     generation = await history.create_generation(
         profile_id=data.profile_id,
