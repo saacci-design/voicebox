@@ -275,6 +275,26 @@ async def get_model_status():
             size_mb = None
             loaded = False
 
+            # Cloud-based engines have no local model — treat as always available
+            if not config["hf_repo_id"]:
+                downloaded = True
+                try:
+                    loaded = config["check_loaded"]()
+                except Exception:
+                    loaded = False
+                statuses.append(
+                    models.ModelStatus(
+                        model_name=config["model_name"],
+                        display_name=config["display_name"],
+                        hf_repo_id=config["hf_repo_id"],
+                        downloaded=True,
+                        downloading=False,
+                        size_mb=None,
+                        loaded=loaded,
+                    )
+                )
+                continue
+
             if cache_info:
                 repo_id = config["hf_repo_id"]
                 for repo in cache_info.repos:
